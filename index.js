@@ -2,7 +2,7 @@
 var googleAuth = (function () {
 
   function installClient() {
-    var apiUrl = 'https://apis.google.com/js/api.js'
+    var apiUrl = 'https://apis.google.com/js/' + apiUrl + '.js'
     return new Promise((resolve) => {
       var script = document.createElement('script')
       script.src = apiUrl
@@ -42,8 +42,8 @@ var googleAuth = (function () {
       return !!this.GoogleAuth
     };
 
-    this.load = (config, prompt, apiName) => {
-      installClient()
+    this.load = (config, prompt, apiName, apiUrl) => {
+      installClient(apiUrl)
         .then(() => {
           return initClient(config, apiName)
         })
@@ -121,7 +121,7 @@ var googleAuth = (function () {
 
 
 
-function installGoogleAuthPlugin(Vue, options, apiNameToLoad) {
+function installGoogleAuthPlugin(Vue, options, apiNameToLoad, apiUrlToLoad) {
   /* eslint-disable */
   //set config
   let GoogleAuthConfig = null
@@ -138,6 +138,7 @@ function installGoogleAuthPlugin(Vue, options, apiNameToLoad) {
     console.warn('invalid option type. Object type accepted only')
   }
   const apiName = apiNameToLoad ? apiNameToLoad : 'auth2'  
+  const apiUrl = apiUrlToLoad ? apiUrlToLoad : 'api'
 
   //Install Vue plugin
   Vue.gAuth = googleAuth
@@ -148,7 +149,7 @@ function installGoogleAuthPlugin(Vue, options, apiNameToLoad) {
       }
     }
   })
-  Vue.gAuth.load(GoogleAuthConfig, prompt, apiName)
+  Vue.gAuth.load(GoogleAuthConfig, prompt, apiName, apiUrl)
 }
 
 export default installGoogleAuthPlugin
