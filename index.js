@@ -18,12 +18,16 @@ var googleAuth = (function () {
   }
 
   function initClient(config, apiName) {
+    var copyConfig = {...config}
     return new Promise((resolve) => {
       window.gapi.load(apiName, () => {
         window.gapi.auth2.init(config)
           .then(() => {
             resolve(window.gapi)
           })
+          if (apiName.includes('client')) {
+            window.gapi.client.init(copyConfig)
+          }
       })
     })
 
